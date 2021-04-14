@@ -10,7 +10,7 @@ application/logs/*
 application/uploads/*
 public/license/.licenses
 public/license/bower.LICENSES
-public/dist
+#public/dist
 generate_langauges.php
 dist/
 docs/
@@ -25,7 +25,7 @@ git-svn-diff.py
 .buildpath
 .project
 .settings/*
-vendor/
+#vendor/
 *.swp
 *.rej
 *.orig
