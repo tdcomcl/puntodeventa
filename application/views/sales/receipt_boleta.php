@@ -220,7 +220,7 @@
 	
 
 	<div id="barcode">
-		<img src='https://tapiaytapia.sisnet.cl/<?php  echo $informacion["body"]["datos_dte"]["Encabezado"]["IdDoc"]["Folio"]; ?>.png' /><br>
+	<img src='<?php echo base_url()?><?php  echo $informacion["body"]["datos_dte"]["Encabezado"]["IdDoc"]["Folio"]; ?>.png' /><br>
 		<p>Timbre Electronico SII</p>
 		<p>Resolución <?php echo $informacion["body"]["resolucion"]["numero"]; ?> de <?php echo $informacion["body"]["resolucion"]["fecha"]; ?></p>
 		<?php  ?>
