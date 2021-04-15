@@ -7,5 +7,5 @@ application/config/database.php
 /.htaccess
 public/.htaccess
 application/sessions/*
-#application/logs/*
+application/logs/*
 *.log
