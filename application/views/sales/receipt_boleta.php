@@ -15,7 +15,7 @@
 		if($this->config->item('receipt_show_company_name'))
 		{
 		?>
-			<div id="company_name"><?php echo $informacion["body"]["datos_dte"]["Encabezado"]["Emisor"]["RznSocEmisor"]; ?></div>
+			<div id="company_name"><?php echo $informacion["body"]["datos_dte"]["Encabezado"]["Emisor"]["RznSocEmisor"]; ?><br />R.U.T: <?php echo $informacion["body"]["datos_dte"]["Encabezado"]["Emisor"]["RUTEmisor"]; ?></div>
 		<?php
 		}
 		?>
@@ -36,7 +36,7 @@
 		}
 		?>
 
-		<div id="sale_id">Nº: <?php echo $informacion["body"]["datos_dte"]["Encabezado"]["IdDoc"]["Folio"]; ?> </div>
+		<div id="sale_id">Folio Nº: <?php echo $informacion["body"]["datos_dte"]["Encabezado"]["IdDoc"]["Folio"]; ?> </div>
 
 		<?php
 		if(!empty($invoice_number))

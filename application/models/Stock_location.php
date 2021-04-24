@@ -50,8 +50,7 @@ class Stock_location extends CI_Model
 	{
 		$stock = $this->get_undeleted_all($module_id)->result_array();
 		$stock_locations = array();
-		foreach($stock as $location_data)
-		{
+		foreach ($stock as $location_data) {
 			$stock_locations[$location_data['location_id']] = $location_data['location_name'];
 		}
 
@@ -103,15 +102,15 @@ class Stock_location extends CI_Model
 	public function save(&$location_data, $location_id)
 	{
 		$location_name = $location_data['location_name'];
+		$location_CdgSIISucur = json_encode($location_data);
 
-		$location_data_to_save = array('location_name' => $location_name, 'deleted' => 0);
+		$location_data_to_save = array('location_name' => $location_name, 'deleted' => 0, 'CdgSIISucur' => $location_CdgSIISucur);
 
-		if(!$this->exists($location_id))
-		{
+		if (!$this->exists($location_id)) {
 			$this->db->trans_start();
 
 			$this->db->insert('stock_locations', $location_data_to_save);
- 			$location_id = $this->db->insert_id();
+			$location_id = $this->db->insert_id();
 
 			$this->_insert_new_permission('items', $location_id, $location_name);
 			$this->_insert_new_permission('sales', $location_id, $location_name);
@@ -119,8 +118,7 @@ class Stock_location extends CI_Model
 
 			// insert quantities for existing items
 			$items = $this->Item->get_all();
-			foreach($items->result_array() as $item)
-			{
+			foreach ($items->result_array() as $item) {
 				$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
 				$this->db->insert('item_quantities', $quantity_data);
 			}
@@ -130,10 +128,11 @@ class Stock_location extends CI_Model
 			return $this->db->trans_status();
 		}
 
+
+
 		$original_location_name = $this->get_location_name($location_id);
 
-		if($original_location_name != $location_name)
-		{
+		if ($original_location_name != $location_name) {
 			$this->db->where('location_id', $location_id);
 			$this->db->delete('permissions');
 
@@ -141,6 +140,21 @@ class Stock_location extends CI_Model
 			$this->_insert_new_permission('sales', $location_id, $location_name);
 			$this->_insert_new_permission('receivings', $location_id, $location_name);
 		}
+
+		$this->db->where('location_id', $location_id);
+
+		return $this->db->update('stock_locations', $location_data_to_save);
+	}
+
+	public function save2(&$location_data, $location_id)
+	{
+		$location_name = $location_data['CdgSIISucur'];
+
+
+		$location_data_to_save = array('CdgSIISucur' => $location_name, 'deleted' => 0);
+
+
+
 
 		$this->db->where('location_id', $location_id);
 
@@ -156,8 +170,7 @@ class Stock_location extends CI_Model
 
 		// insert grants for new permission
 		$employees = $this->Employee->get_all();
-		foreach($employees->result_array() as $employee)
-		{
+		foreach ($employees->result_array() as $employee) {
 			// Retrieve the menu_group assigned to the grant for the module and use that for the new stock locations
 			$menu_group = $this->Employee->get_menu_group($module, $employee['person_id']);
 
@@ -184,4 +197,3 @@ class Stock_location extends CI_Model
 		return $this->db->trans_status();
 	}
 }
-?>

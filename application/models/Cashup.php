@@ -37,6 +37,13 @@ class Cashup extends CI_Model
 		return $this->db->get();
 	}
 
+	public function getPagos()
+	{
+		// $this->db->from('ospos_expenses');
+		// $this->db->order_by('expense_id', 'asc');
+
+		return $this->db->get('ospos_expenses')->result();
+	}
 	/*
 	Gets rows
 	*/
@@ -51,8 +58,7 @@ class Cashup extends CI_Model
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'cashup_id', $order = 'asc', $count_only = FALSE)
 	{
 		// get_found_rows case
-		if($count_only == TRUE)
-		{
+		if ($count_only == TRUE) {
 			$this->db->select('COUNT(cash_up.cashup_id) as count');
 		}
 
@@ -81,39 +87,34 @@ class Cashup extends CI_Model
 		$this->db->join('people AS close_employees', 'close_employees.person_id = cash_up.close_employee_id', 'LEFT');
 
 		$this->db->group_start();
-			$this->db->like('cash_up.open_date', $search);
-			$this->db->or_like('open_employees.first_name', $search);
-			$this->db->or_like('open_employees.last_name', $search);
-			$this->db->or_like('close_employees.first_name', $search);
-			$this->db->or_like('close_employees.last_name', $search);
-			$this->db->or_like('cash_up.closed_amount_total', $search);
-			$this->db->or_like('CONCAT(open_employees.first_name, " ", open_employees.last_name)', $search);
-			$this->db->or_like('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
+		$this->db->like('cash_up.open_date', $search);
+		$this->db->or_like('open_employees.first_name', $search);
+		$this->db->or_like('open_employees.last_name', $search);
+		$this->db->or_like('close_employees.first_name', $search);
+		$this->db->or_like('close_employees.last_name', $search);
+		$this->db->or_like('cash_up.closed_amount_total', $search);
+		$this->db->or_like('CONCAT(open_employees.first_name, " ", open_employees.last_name)', $search);
+		$this->db->or_like('CONCAT(close_employees.first_name, " ", close_employees.last_name)', $search);
 		$this->db->group_end();
 
 		$this->db->where('cash_up.deleted', $filters['is_deleted']);
 
-		if(empty($this->config->item('date_or_time_format')))
-		{
+		if (empty($this->config->item('date_or_time_format'))) {
 			$this->db->where('DATE_FORMAT(cash_up.open_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-		}
-		else
-		{
+		} else {
 			$this->db->where('cash_up.open_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
 
 		$this->db->group_by('cashup_id');
 
 		// get_found_rows case
-		if($count_only == TRUE)
-		{
+		if ($count_only == TRUE) {
 			return $this->db->get()->row_array()['count'];
 		}
 
 		$this->db->order_by($sort, $order);
 
-		if($rows > 0)
-		{
+		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}
 
@@ -152,18 +153,14 @@ class Cashup extends CI_Model
 		$this->db->where('cashup_id', $cashup_id);
 
 		$query = $this->db->get();
-		if($query->num_rows() == 1)
-		{
+		if ($query->num_rows() == 1) {
 			return $query->row();
-		}
-		else
-		{
+		} else {
 			//Get empty base parent object
 			$cash_up_obj = new stdClass();
 
 			//Get all the fields from cashup table
-			foreach($this->db->list_fields('cash_up') as $field)
-			{
+			foreach ($this->db->list_fields('cash_up') as $field) {
 				$cash_up_obj->$field = '';
 			}
 
@@ -176,10 +173,8 @@ class Cashup extends CI_Model
 	*/
 	public function save(&$cash_up_data, $cashup_id = FALSE)
 	{
-		if(!$cashup_id == -1 || !$this->exists($cashup_id))
-		{
-			if($this->db->insert('cash_up', $cash_up_data))
-			{
+		if (!$cashup_id == -1 || !$this->exists($cashup_id)) {
+			if ($this->db->insert('cash_up', $cash_up_data)) {
 				$cash_up_data['cashup_id'] = $this->db->insert_id();
 
 				return TRUE;
@@ -202,11 +197,10 @@ class Cashup extends CI_Model
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-			$this->db->where_in('cashup_id', $cashup_ids);
-			$success = $this->db->update('cash_up', array('deleted'=>1));
+		$this->db->where_in('cashup_id', $cashup_ids);
+		$success = $this->db->update('cash_up', array('deleted' => 1));
 		$this->db->trans_complete();
 
 		return $success;
 	}
 }
-?>
