@@ -18,7 +18,6 @@ class Sales extends Secure_Controller
 		$this->load->library('token_lib');
 		$this->load->library('barcode_lib');
 		$this->load->library('ciqrcode');
-
 	}
 
 	public function index()
@@ -65,7 +64,7 @@ class Sales extends Secure_Controller
 		$params['data'] = $url;
 		$params['level'] = 'H';
 		$params['size'] = 2;
-		$params['savename'] = $folio.'.png';
+		$params['savename'] = $folio . '.png';
 		$this->ciqrcode->generate($params);
 	}
 
@@ -691,6 +690,7 @@ class Sales extends Secure_Controller
 		$data['transaction_time'] = to_datetime($__time);
 		$data['transaction_date'] = to_date($__time);
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
+
 		$data['comments'] = $this->sale_lib->get_comment();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
@@ -774,26 +774,28 @@ class Sales extends Secure_Controller
 
 		ini_set('display_errors', 1);
 
+
+
 		$detalle = [];
 		foreach ($data['cart'] as $item) {
-			if($item['taxed_flag']=='Ventas gravadas'){
+			if ($item['taxed_flag'] == 'Ventas gravadas') {
 				$producto = [
 					'NmbItem' => $item['name'],
 					'QtyItem' => $item['quantity'],
 					'PrcItem' => round($item['price']),
-				
+
 				];
-			}else{
+			} else {
 				$producto = [
 					'IndExe' => 1,
 					'NmbItem' => $item['name'],
 					'QtyItem' => $item['quantity'],
 					'PrcItem' => round($item['price']),
-	
+
 				];
 			}
-			
-			
+
+
 			array_push($detalle, $producto);
 		}
 
@@ -802,8 +804,25 @@ class Sales extends Secure_Controller
 		// aqui se deberia integrar la boleta electronica de $data
 
 
+		$data['codigo'] =	$this->Stock_location->getCodigo($data["cart"][1]["stock_name"]);
+		// var_dump($data["codigo"]);
+		// die();
 		$url = $data['dte']['url_dte'];
 		$hash = '';
+
+
+		if ($data["codigo"] != 0) {
+			$emisore = [
+				'RUTEmisor' => $this->config->item('rutdte'),
+				'CdgSIISucur' => $data["codigo"]
+			];
+		} else {
+			$emisore = [
+				'RUTEmisor' =>  $this->config->item('rutdte'),
+			];
+		}
+
+
 		if (empty($data['customer_info'])) {
 			$nombre = "Persona sin Rut";
 		} else {
@@ -814,9 +833,7 @@ class Sales extends Secure_Controller
 				'IdDoc' => [
 					'TipoDTE' => $this->config->item('tipob'),
 				],
-				'Emisor' => [
-					'RUTEmisor' => $this->config->item('rutdte'),
-				],
+				'Emisor' => $emisore,
 				'Receptor' => [
 					'RUTRecep' => '66666666-6',
 					'RznSocRecep' => $nombre,
@@ -1006,7 +1023,7 @@ class Sales extends Secure_Controller
 					'fecha' => $generar['body']['fecha'],
 					'total' => $generar['body']['total'],
 				];
-				$consultar = $LibreDTE->get('/dte/dte_emitidos/info/' . $generar['body']['dte'] . '/' . $generar['body']['folio'] .'/'.$generar['body']['emisor']. '?getXML=0&getDetalle=1&getDatosDte=1&getTed=1&getResolucion=1&getEmailEnviados=0', $datos);
+				$consultar = $LibreDTE->get('/dte/dte_emitidos/info/' . $generar['body']['dte'] . '/' . $generar['body']['folio'] . '/' . $generar['body']['emisor'] . '?getXML=0&getDetalle=1&getDatosDte=1&getTed=1&getResolucion=1&getEmailEnviados=0', $datos);
 				//$consultar = $LibreDTE->get('/dte/dte_emitidos/info/' . $generar['body']['dte'] . '/' . $generar['body']['folio'] . '/76955668?getXML=0&getDetalle=1&getDatosDte=1&getTed=1&getResolucion=1&getEmailEnviados=0', $datos);
 				if ($consultar['status']['code'] != 200) {
 					die('Error al realizar la consulta del DTE emitido: ' . $consultar['body'] . "\n");
@@ -1014,7 +1031,7 @@ class Sales extends Secure_Controller
 
 
 				$data['informacion'] = $consultar;
-				$url = $this->config->item('url_dte').'/dte/dte_emitidos/pdf/'.$this->config->item('tipob').'/'.$generar['body']['folio'].'/'.$generar['body']['certificacion'].'/'.$generar['body']['emisor'].'/'.$generar['body']['fecha'].'/'.$generar['body']['total'];
+				$url = $this->config->item('url_dte') . '/dte/dte_emitidos/pdf/' . $this->config->item('tipob') . '/' . $generar['body']['folio'] . '/' . $generar['body']['certificacion'] . '/' . $generar['body']['emisor'] . '/' . $generar['body']['fecha'] . '/' . $generar['body']['total'];
 
 				$this->qr($url, $generar['body']['folio']);
 

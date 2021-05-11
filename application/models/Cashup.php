@@ -37,12 +37,19 @@ class Cashup extends CI_Model
 		return $this->db->get();
 	}
 
-	public function getPagos()
+	public function getPagos($fechaInicio, $employee_id)
 	{
 		// $this->db->from('ospos_expenses');
 		// $this->db->order_by('expense_id', 'asc');
+		//->where('employee_id = ', $employee_id)
+		// return $this->db->get('ospos_expenses')->result();
 
-		return $this->db->get('ospos_expenses')->result();
+
+		$this->db->from('ospos_expenses');
+		$this->db->where('employee_id = ', $employee_id);
+
+		$this->db->where('date > ', $fechaInicio);
+		return $this->db->get()->result();
 	}
 	/*
 	Gets rows

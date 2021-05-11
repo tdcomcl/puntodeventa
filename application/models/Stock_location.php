@@ -99,6 +99,14 @@ class Stock_location extends CI_Model
 		return $this->db->get()->row()->location_id;
 	}
 
+	public function getCodigo($location_name)
+	{
+		$this->db->from('stock_locations');
+		$this->db->where('location_name', $location_name);
+
+		return $this->db->get()->row()->CdgSIISucur;
+	}
+
 	public function save(&$location_data, $location_id)
 	{
 		$location_name = $location_data['location_name'];

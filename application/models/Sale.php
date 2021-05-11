@@ -366,10 +366,13 @@ class Sale extends CI_Model
 
 		return $this->db->count_all_results();
 	}
-	public function getVentas($fechaInicio)
+	public function getVentas($fechaInicio, $employee_id)
 	{
 		$this->db->from('ospos_sales_payments');
+		$this->db->where('employee_id = ', $employee_id);
 		$this->db->where('payment_time > ', $fechaInicio);
+
+		// employee_id
 		return $this->db->get()->result();
 	}
 

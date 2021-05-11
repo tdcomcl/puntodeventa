@@ -134,9 +134,9 @@ class Cashups extends Secure_Controller
 		}
 
 		$data['cash_ups_info'] = $cash_ups_info;
-		$data['gastos'] = $this->Cashup->getPagos();
-		$data['ventas'] = $this->Sale->getVentas($cash_ups_info->open_date);
-		// var_dump($data["ventas"]);
+		$data['gastos'] = $this->Cashup->getPagos($cash_ups_info->open_date, $cash_ups_info->open_employee_id);
+		$data['ventas'] = $this->Sale->getVentas($cash_ups_info->open_date, $cash_ups_info->open_employee_id);
+		// var_dump($cash_ups_info->open_date);
 		// die();
 		$this->load->view("cashups/form", $data);
 	}
