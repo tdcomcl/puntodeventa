@@ -9,3 +9,4 @@ public/.htaccess
 application/sessions/*
 application/logs/*
 *.log
+*.png
