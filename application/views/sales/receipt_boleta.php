@@ -52,10 +52,10 @@
 
 	<table id="receipt_items">
 		<tr>
-			<th style="width:40%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('sales_price'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-			<th style="width:20%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
+			<th style="wiportezuelo:40%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
+			<th style="wiportezuelo:20%;"><?php echo $this->lang->line('sales_price'); ?></th>
+			<th style="wiportezuelo:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+			<th style="wiportezuelo:20%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
 			
 		</tr>
 		<?php

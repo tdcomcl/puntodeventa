@@ -156,7 +156,7 @@
                 </tr>
                 <tr>
                     <td>Venta Tarjetas </td>
-                    <td><?php echo to_currency_no_money($ventaTotalc); ?></td>
+                    <td id="ventastotalestarjeta"><?php echo to_currency_no_money($ventaTotalc); ?></td>
                 </tr>
                 <tr>
                     <td>Venta Otros (Aplicaciones) </td>
@@ -680,7 +680,12 @@ function validar() {
     var efectivoSistema = replaceAll(document.getElementById('ventasEfectivo').value, '.', ""); // Esconder este campo
     var aperturaCaja = replaceAll(document.getElementById('open_amount_cash').value, '.', ""); // Esconder este campo
     var ventasEfectivo = replaceAll(document.getElementById('ventasEfectivo').value, '.', ""); // Esconder este campo
+    var gastos = replaceAll(document.getElementById('transfer_amount_cash').value, '.', ""); // Esconder este campo
+    var ventastotalesefectivo = replaceAll(<?php echo to_currency_no_money($ventaTotal); ?>, '.', ""); // Esconder este campo
+    var closed_amount_card = replaceAll(document.getElementById('closed_amount_card').value, '.', ""); // Esconder este campo
+    var ventastotalestarjeta = replaceAll(document.getElementById('ventasTarjeta').value, '.', ""); // Esconder este campo
 
+    
     var closed_amount_cash = replaceAll(document.getElementById('closed_amount_cash').value, '.',
         ""); // Esconder este campo
 
@@ -697,10 +702,21 @@ function validar() {
 
     console.log("total de venta " + totalSistemaEfectivo);
 
-    if (efectivoIngresado != totalSistemaEfectivo) {
+    if (closed_amount_cash != totalSistemaEfectivo) {
+
+        var totalefectivocontado =((parseInt(aperturaCaja)-parseInt(gastos))+parseInt(closed_amount_cash));
+        var totalefectivosistema =((parseInt(aperturaCaja)-parseInt(gastos))+parseInt(efectivoIngresado));
+        var diferenciatarjeta = parseInt(closed_amount_card) - parseInt(ventastotalestarjeta);
+        var diferenciaefectivo = parseInt(totalefectivocontado) - parseInt(totalefectivosistema);
+
+        console.log("------------------------------");
+        console.log("Total Efectivo Contado: "+totalefectivocontado);
+        console.log("Total Efectivo Sistema: "+totalefectivosistema);
+        console.log("Diferencia Tarjeta: "+diferenciatarjeta);
+        console.log("Diferencia Efectivo: "+diferenciaefectivo);
 
 
-
+        console.log("------------------------------");
         var resultado = parseInt(closed_amount_cash) - parseInt(aperturaCaja); // 208.650 - 100.000
 
         console.log("La diferencia entre la apertura y la cuenta de billetes: " + resultado); // 108.650
@@ -711,11 +727,11 @@ function validar() {
 
 
         console.log(parseInt(result));
-        document.getElementById("diferenciaEfectivo").innerHTML = result;
-        document.getElementById("diferenciaEfectivo1").innerHTML = result;
+        document.getElementById("diferenciaEfectivo").innerHTML = diferenciaefectivo;
+        document.getElementById("diferenciaEfectivo1").innerHTML = diferenciaefectivo;
 
         document.getElementById("errorVentasEfectivo").innerHTML = "Existen diferencias, efectivo en sistema:" +
-            efectivoSistema;
+        diferenciaefectivo;
         valid = 1;
     } else {
         document.getElementById("errorVentasEfectivo").innerHTML = "Sin Diferencias";
@@ -735,16 +751,16 @@ function validar() {
         console.log(resultadot);
 
 
-        document.getElementById("diferenciaTarjeta").innerHTML = resultadot;
-        document.getElementById("diferenciaTarjeta1").innerHTML = resultadot;
+        document.getElementById("diferenciaTarjeta").innerHTML = diferenciatarjeta;
+        document.getElementById("diferenciaTarjeta1").innerHTML = diferenciatarjeta;
 
-        document.getElementById("diferenciaTotal").innerHTML = Math.round(result + resultadot, 1);
-        document.getElementById("diferenciaTotal1").innerHTML = Math.round(result + resultadot, 1);
+        document.getElementById("diferenciaTotal").innerHTML = Math.round(diferenciaefectivo + diferenciatarjeta, 1);
+        document.getElementById("diferenciaTotal1").innerHTML = Math.round(diferenciaefectivo + diferenciatarjeta, 1);
 
 
         document.getElementById("errorVentasTarjeta").innerHTML =
             "Existen diferencias, ventas realizadas con tarjetas:" +
-            tarjetaSistema;
+            diferenciatarjeta;
         valid = 1;
 
     } else {
