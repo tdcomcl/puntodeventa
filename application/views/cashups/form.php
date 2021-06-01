@@ -127,6 +127,7 @@
             if ($v->payment_time  > $cash_ups_info->open_date) {
                 if ($v->payment_type == "Efectivo") {
                     $ventaTotal  = $ventaTotal + $v->payment_amount;
+                    echo $ventaTotal;
                 } else {
                     // tarjeta debito
                     if ($v->payment_type == "Tarjeta Débito Crédito") {
@@ -174,6 +175,14 @@
         $saldo = 0;
         $saldo =  $cash_ups_info->open_amount_cash + $ventaTotal;
         $saldo = $saldo - $gastoTotal;
+        var_dump($cash_ups_info->open_amount_cash);
+        var_dump("///");
+        var_dump($ventaTotal);
+        var_dump("///");
+        var_dump($saldo);
+        var_dump("///");
+
+        var_dump($gastoTotal);
         ?>
 
 
