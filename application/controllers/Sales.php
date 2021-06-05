@@ -1352,7 +1352,25 @@ class Sales extends Secure_Controller
 
 	public function receipt($sale_id)
 	{
+		
+		
+
 		$data = $this->_load_sale_data($sale_id);
+
+
+
+	
+		$this->load->database();
+		$this->load->model('LogImpresion');
+		$response=$this->LogImpresion->saverecords($data);
+
+		if($response==true){
+			echo "Records Saved Successfully";
+	}
+	else{
+			echo "Insert error !";
+	}
+
 		$this->load->view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
