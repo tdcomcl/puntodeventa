@@ -2,7 +2,7 @@
 class LogImpresion extends CI_Model 
 {
 	
-	function saverecords($data)
+	function saverecords($data, $reimpresor)
 	{
 
         $info = array();
@@ -12,6 +12,7 @@ class LogImpresion extends CI_Model
         $info["cash_total"] = $data["cash_total"];
         $info["transaction_time"] = $data["transaction_time"];
         $info["payments"] = json_encode($data["payments"]);
+        $info["reimpresor"] = $reimpresor;
         // var_dump($info);die();
 
         $this->db->insert('ospos_logImpresion',$info);

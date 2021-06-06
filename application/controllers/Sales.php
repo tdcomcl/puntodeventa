@@ -1356,13 +1356,14 @@ class Sales extends Secure_Controller
 		
 
 		$data = $this->_load_sale_data($sale_id);
-
-
-
-	
+		$person_id = $this->session->userdata("person_id");
+		
+		
 		$this->load->database();
 		$this->load->model('LogImpresion');
-		$response=$this->LogImpresion->saverecords($data);
+		$this->load->model('Employee');
+		$persona = $this->Employee->get_info($person_id);
+		$response=$this->LogImpresion->saverecords($data, $persona->username);
 
 		if($response==true){
 			echo "Records Saved Successfully";
