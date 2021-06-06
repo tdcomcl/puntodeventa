@@ -1365,12 +1365,12 @@ class Sales extends Secure_Controller
 		$persona = $this->Employee->get_info($person_id);
 		$response=$this->LogImpresion->saverecords($data, $persona->username);
 
-		if($response==true){
+/* 		if($response==true){
 			echo "Records Saved Successfully";
 	}
 	else{
 			echo "Insert error !";
-	}
+	} */
 
 		$this->load->view('sales/receipt', $data);
 		$this->sale_lib->clear_all();

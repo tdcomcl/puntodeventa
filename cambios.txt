@@ -1,7 +1,9 @@
 git add .
 git commit -m "cometario"
-git push
-a
+git push  (subir desde servidor a repositorio)
+
+
+ git pull (desde repo a servidor para actualizar)
 
 
 Version: 3.3.5 
