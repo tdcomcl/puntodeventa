@@ -274,9 +274,10 @@ function get_payment_options()
 	}
 	else // default: if($config->item('payment_options_order') == 'cashdebitcredit')
 	{
+		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
 		$payments[$lang->line('sales_tarjetas')] = $lang->line('sales_tarjetas'); 
 		//$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
-		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+		
 		
 	//	$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
 	}  
@@ -284,7 +285,7 @@ function get_payment_options()
 	    $payments[$lang->line('sales_rappi')] = $lang->line('sales_rappi');
 	    $payments[$lang->line('sales_pya')] = $lang->line('sales_pya');
 	    $payments[$lang->line('sales_uber')] = $lang->line('sales_uber');
-	//$payments[$lang->line('sales_due')] = $lang->line('sales_due');
+	$payments[$lang->line('sales_due')] = $lang->line('sales_due');
 	//$payments[$lang->line('sales_check')] = $lang->line('sales_check');
 
 	// If India (list of country codes include India) then include Unified Payment Interface

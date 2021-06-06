@@ -47,7 +47,7 @@
 			</div>
 		<?php echo form_close(); ?>
 		<!--<h1>User: sisnet clave: sisnet1234  Version<?php echo $this->config->item('application_version'); ?></h1>-->
-		<h1>Punto de ventas SisPos Version: <?php echo $this->config->item('application_version'); ?></h1>
+		<h1>Punto de ventas SisPos Versión: <?php echo $this->config->item('application_version'); ?></h1>
 	</div>
 </body>
 </html>
