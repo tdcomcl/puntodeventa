@@ -541,6 +541,9 @@ class Sales extends Secure_Controller
 		$data['print_price_info'] = TRUE;
 
 		// aqui se deberia integrar la boleta electronica de $data
+		$variable = $this->sale_lib->get_sale_location();
+		$data['codigo'] =	$this->Stock_location->getCodigo($variable);
+		
 
 		if ($this->sale_lib->is_invoice_mode()) {
 			$invoice_format = $this->config->item('sales_invoice_format');
@@ -803,10 +806,12 @@ class Sales extends Secure_Controller
 
 		// aqui se deberia integrar la boleta electronica de $data
 
+		
+		// Selecciona el Stock location seleccionado 
+		$variable = $this->sale_lib->get_sale_location(); // Saca el current stock
+		$data['codigo'] =	$this->Stock_location->getCodigo($variable);
 
-		$data['codigo'] =	$this->Stock_location->getCodigo($data["cart"][1]["stock_name"]);
-		// var_dump($data["codigo"]);
-		// die();
+
 		$url = $data['dte']['url_dte'];
 		$hash = '';
 
